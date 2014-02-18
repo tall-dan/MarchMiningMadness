@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * TODO Put here a description of what this class does.
@@ -11,48 +12,17 @@ import java.util.ArrayList;
  */
 public class Team {
 	protected float score;
-	protected String name;
+	protected int id;
 
-	public Team(String name, float score) {
+	public Team(int id, float score) {
 		this.score = score;
-		this.name = name;
+		this.id = id;
 	}
 
 	@Override
 	public String toString() {
-		return this.name;
+		return String.valueOf(this.id);
 	}
 
-	public static ArrayList<Team> readTeams(String teamFile) {
-		BufferedReader br = null;
-		String line = "";
-		String csvSplitBy = ",";
-		ArrayList<Team> teams= new ArrayList<Team>();
-		try {
 
-			br = new BufferedReader(new FileReader(teamFile));
-			while ((line = br.readLine()) != null) {
-
-				// use comma as separator
-				//Expects team name first, then score
-				String[] stuff = line.split(csvSplitBy);
-				teams.add(new Team(stuff[0],Float.valueOf(stuff[1])));
-
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-
-		return null;
-	}
 }
