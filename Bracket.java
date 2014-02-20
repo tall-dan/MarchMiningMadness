@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 public class Bracket {
 	private static HashMap<String, Game> games;
 	private static HashMap<Integer, Team> teams;
-	public Team champion;
 
 	/**
 	 * TODO Put here a description of what this constructor does.

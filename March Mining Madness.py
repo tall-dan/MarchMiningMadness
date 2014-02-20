@@ -50,13 +50,13 @@ def getWeightedTotalTournamentAppearances():
 
 def getPrediction(season):#Anything that says weighted goes into a team's overall score
     weightedTourneyAppearances=getWeightedTotalTournamentAppearances()['appearances']#normalized total appearances
-    weightedTourneyPerformance=getTournamentWinLosses(season)['winpct']*10#season tournament win pct
+    weightedTourneyPerformance=getTournamentWinLosses(season)['winpct']*5#season tournament win pct
     allTourneyPerformance=getTournamentWinLosses(0)
-    weightedAllTourneyWinPct=allTourneyPerformance['winpct']#overall tournament winpct
+    weightedAllTourneyWinPct=allTourneyPerformance['winpct']*1.5#overall tournament winpct
     weightedAllTourneyWins=allTourneyPerformance['wins']/allTourneyPerformance['wins'].max()#normalized tournament win count
-    weightedSeasonWinLosses=getWinLossTotals(season)['winpct']#regular season win pct
+    weightedSeasonWinLosses=getWinLossTotals(season)['winpct']*2#regular season win pct
     weightedOverallWinPct=getWinLossTotals(0)['winpct']#overall regular season win pct
-    totals=weightedSeasonWinLosses+weightedOverallWinPct+weightedAllTourneyWins+weightedAllTourneyWinPct+weightedTourneyPerformance+weightedTourneyAppearances
+    totals=weightedSeasonWinLosses+weightedOverallWinPct+weightedAllTourneyWins+weightedAllTourneyWinPct+weightedTourneyAppearances+weightedTourneyPerformance
     totals.sort(ascending=False)
     return totals
 
@@ -76,7 +76,9 @@ def getTournamentSeeds(season):
     ranks = getPrediction(season) # get the rankings of all teams
     seed_ranks = ranks[seed_teams] # only take the rankings of teams which have been seeded
     # TODO: add header to csv
-    seed_ranks.to_csv('seed_ranks.csv') # write seeded teams with their rankings to csv  
+    
+    filename='computedTables/seed_ranks'+season+'.csv'
+    seed_ranks.to_csv(filename) # write seeded teams with their rankings to csv  
     
     
     # Create the csv file that lists each round 1 slot and the high and low seeded teams playing
@@ -115,8 +117,8 @@ def getTournamentSeeds(season):
 
     seeds_with_teams = round1_slots.replace(to_replace=seed_locations_slots,value=seed_locations_teams)
     seeds_with_teams = seeds_with_teams.drop('slot',1)    
-    
-    seeds_with_teams.to_csv('seed_slots.csv',header=False)  
+    csvName='computedTables/seed_slots'+season+'.csv'
+    seeds_with_teams.to_csv(csvName,header=False)  
 
 def tourneyResults(season):
     # this will create a csv file with all the slots and which team actually won it
@@ -153,8 +155,9 @@ def tourneyResults(season):
     
     bracket = bracket.drop('slot',1)
     bracket.ix['WIN']['weakseed']=bracket.ix['WIN']['strongseed']
-    bracket.to_csv('real_bracket.csv',header=False)
-    print bracket.tail(50)
+    filename='computedTables/real_bracket'+season+'.csv'
+    bracket.to_csv(filename,header=False)
+
     
     
 def winner(games,bracket,results):
@@ -182,5 +185,9 @@ def winner(games,bracket,results):
         
 
 def main():
-	tourneyResults('R')
-	getTournamentSeeds('R')
+	seasons=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R']
+	for i in seasons:
+		print i
+		tourneyResults(i)
+		getTournamentSeeds(i)
+main()

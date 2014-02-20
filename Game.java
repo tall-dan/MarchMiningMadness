@@ -92,17 +92,13 @@ public class Game {
 	public int getScore(Game other){
 		int score=0;//TODO: put a catch for the winner here
 		this.round=this.round==18? 6:this.round;
-		System.out.println("Answer: "+other.toString());
-		System.out.println("Guess:  "+this.toString());
 		if (this.round==1){
-			System.out.println("Points: "+score+"\n");
 			return score;
 		}
 		if (this.team1==other.team1||this.team1==other.team2)//got one team right
-			score+=Math.pow(2,(this.round-1));
+			score+=Math.pow(2,(this.round-2));
 		if (this.team2==other.team1||this.team2==other.team2)//got other team right
-			score+=Math.pow(2,(this.round-1));
-		System.out.println("Points: "+score+"\n");
+			score+=Math.pow(2,(this.round-2));
 		return score;
 	}
 	
